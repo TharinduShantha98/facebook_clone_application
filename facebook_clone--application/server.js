@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 8080
 app.use(morgan('tiny'));
 
 
-app.use('/customer',customer)
+app.use('/api/customer',customer)
 
 //mongoDb connection
 connectDB();

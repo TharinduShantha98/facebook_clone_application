@@ -12,7 +12,18 @@ let userDb = require('../model/userModel');
 
 router.get('/',(req,res)=>{
     console.log("hello world");
-    res.send('customer get');
+
+    userDb.find()
+        .then(user=>{
+            res.send(user);
+        })
+        .catch(err=>{
+            res.status(500).send({
+                message:err.message || "Error Occurred while retrieving user information"
+            })
+        })
+
+
 
 })
 
@@ -49,14 +60,81 @@ router.post('/',jsonParser,(req,res)=>{
             })
         })
 
+})
 
 
+router.put('/:id',jsonParser,(req,res)=>{
+    console.log("hello put")
+
+    if(!req.body){
+        res.status(400).send({message:"content can not be empty"})
+        return
+    }
+
+    const id = req.params.id;
+    const content =  req.body;
+
+   userDb.findByIdAndUpdate(id, content)
+       .then(data=>{
+           if(!data){
+              res.status(404).send({message:`cannot update user with${id}. maybe user not found`})
+           }else{
+               res.send(data)
+           }
+
+       })
+
+
+})
+
+
+router.delete("/:id",(req,res)=>{
+
+    const id = req.params.id;
+
+    userDb.findByIdAndDelete(id)
+        .then(data=>{
+            if(!data){
+                res.status(404).send({message:`cannot Delete with id ${id}. maybe is is wrong`})
+            }else {
+                res.send({
+                    message:"User was deleted successfully"
+                })
+            }
+
+
+        })
 
 
 
 
 })
 
+
+
+router.get('/searchUser',(req,res)=>{
+
+    const id = req.query.id;
+
+    userDb.findById(id)
+        .then(data=>{
+
+            if(!data){
+                res.status(404).send({message:"not found user with id: " + id});
+            }else{
+                res.send(data);
+            }
+
+
+        })
+        .catch(err =>{
+            res.status(500).send({message:"Error retrieving  user with id: " + id});
+        })
+
+
+
+
+})
 
 
 module.exports = router;

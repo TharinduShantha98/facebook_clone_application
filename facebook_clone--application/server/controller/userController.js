@@ -17,10 +17,41 @@ router.get('/',(req,res)=>{
 })
 
 
-router.post('/',(req,res)=>{
+router.post('/',jsonParser,(req,res)=>{
 
-    console.log("hiiiiiiii")
-    res.send("hiiiii");
+    console.log(req.body);
+
+
+    if(!req.body){
+        res.status(400).send({message:"Content can not be empty"});
+        return
+
+    }
+
+    const user = new userDb({
+        firstName: req.body.firstName,
+        surname:req.body.surname,
+        gender:req.body.gender,
+        dateOfBirth:req.body.dateOfBirth,
+        phoneNumber:req.body.phoneNumber,
+        email:req.body.email
+
+    })
+
+    user
+        .save(user)
+        .then(data=>{
+            res.send(data);
+        })
+        .catch(err=>{
+            res.status(500).send({
+                message:err.message|| "some error occurred while creating a create operation"
+            })
+        })
+
+
+
+
 
 
 

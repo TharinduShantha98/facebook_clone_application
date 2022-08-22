@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 const connectDB = require('./server/database/connection')
+const customer = require('./server/controller/userController')
 
 
 const app = express();
@@ -13,6 +14,9 @@ const PORT = process.env.PORT || 8080
 
 //log requests
 app.use(morgan('tiny'));
+
+
+app.use('/customer',customer)
 
 //mongoDb connection
 connectDB();

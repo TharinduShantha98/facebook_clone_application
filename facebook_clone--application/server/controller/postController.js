@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const multer = require('multer');
+
+
+
 let jsonParser = bodyParser.json();
 let userPost = require("../model/postModel");
 
@@ -189,6 +192,9 @@ router.get('/searchUserPost',(req,res)=>{
 
 
 })
+
+
+
 
 
 

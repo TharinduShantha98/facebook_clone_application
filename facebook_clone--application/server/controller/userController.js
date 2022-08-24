@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 let jsonParser = bodyParser.json();
+const bCrypt = require('bcryptjs');
+const jsonWebToken = require('jsonwebtoken');
+
+
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 
@@ -134,6 +138,42 @@ router.get('/searchUser',(req,res)=>{
 
 
 })
+
+
+router.post('/login',(req,res)=>{
+
+    let userName = req.body.username
+    let email = req.body.email
+
+    console.log(email);
+
+
+    userDb.find({"firstName" : userName, "email": email})
+        .then(user =>{
+            if(user){
+                //res.send(user)
+
+                let token = jsonWebToken.sign(
+                    {userName:user.username},
+                    'verySecretValue',{expiresIn: '1h'})
+
+
+                res.json({
+                    message: "login successfully",
+                    Token: token
+                })
+
+            }else{
+                res.send({
+                    message:"no user found"
+                })
+            }
+        })
+
+
+})
+
+
 
 
 module.exports = router;

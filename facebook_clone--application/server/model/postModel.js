@@ -9,7 +9,7 @@ let schema = new mongoose.Schema({
         required:true,
     },
     tittle:String,
-    Date:String,
+    date:String,
     time:String,
     bodyText:String,
     bodyImage:{
@@ -21,5 +21,5 @@ let schema = new mongoose.Schema({
 })
 
 
-const post = mongoose.model('post',schema)
-module.exports = post
+const userPost = mongoose.model('post',schema)
+module.exports = userPost

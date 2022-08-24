@@ -25,6 +25,17 @@ const upload = multer({
 
 router.get('/',(req,res)=>{
 
+    userPost.find()
+        .then(post=>{
+            res.send(post);
+        })
+        .catch(err=>{
+            res.status(500).send({
+                message:err.message|| "Error Occurred while retrieving user information"
+            })
+        })
+
+
 
 })
 

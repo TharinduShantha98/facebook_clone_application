@@ -81,4 +81,92 @@ router.post('/',(req,res)=>{
 })
 
 
+
+router.put('/:id',(req,res)=>{
+
+    const id = req.params.id;
+    console.log(id);
+
+
+    upload(req,res,(err)=>{
+        if(err){
+            console.log(err);
+        }else{
+
+            console.log(req.body);
+            /*const newUserPost  = new userPost({
+                userId:req.body.userId,
+                tittle:req.body.tittle,
+                date:req.body.date,
+                time:req.body.time,
+                bodyText:req.body.bodyText,
+                bodyImage:{
+                    data:req.file.filename,
+                    contentType:'image/png'
+                }
+
+            })*/
+
+            const newUserPost = {
+                userId:req.body.userId,
+                tittle:req.body.tittle,
+                date:req.body.date,
+                time:req.body.time,
+                bodyText:req.body.bodyText,
+                bodyImage:{
+                    data:req.file.filename,
+                    contentType:'image/png'
+                }
+
+            }
+
+
+            userPost.findByIdAndUpdate(id,newUserPost)
+                .then(data=>{
+                    if(!data){
+                        res.status(404).send({
+                            message:`can not update post with ${id} maybe user not found`
+                        })
+                    }else{
+                        res.send(data);
+
+                    }
+                })
+
+
+
+        }
+
+
+    })
+
+})
+
+
+
+router.delete("/:id",(req,res)=>{
+
+    const id = req.params.id;
+
+    userPost.findByIdAndDelete(id)
+        .then(data=>{
+            if(!data){
+                res.status(404).send(
+                    {message:`cannot Delete with id ${id}. maybe is is wrong`})
+            }else{
+                res.send({
+                    message:"Post was deleted successfully"
+                })
+            }
+
+
+        })
+
+
+})
+
+
+
+
+
 module.exports = router;

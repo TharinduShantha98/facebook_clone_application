@@ -168,5 +168,30 @@ router.delete("/:id",(req,res)=>{
 
 
 
+router.get('/searchUserPost',(req,res)=>{
+
+    const id = req.query.id;
+
+    userPost.find({"userId" : id})
+        .then(data=>{
+            if(!data){
+                res.status(404).send({
+                    message:"not found user with id: "+ id
+                })
+            }else{
+                res.send(data)
+            }
+        })
+        .catch(err=>{
+            res.status(500).send({message:"Error retrieving  user with id: " + id});
+        })
+
+
+
+})
+
+
+
+
 
 module.exports = router;

@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const connectDB = require('./server/database/connection')
 const customer = require('./server/controller/userController')
 const userPost = require('./server/controller/postController')
+const userLogin = require('./server/controller/loginController')
 
 
 
@@ -38,6 +39,7 @@ app.use(morgan('tiny'));
 //Api
 app.use('/api/customer',customer)
 app.use('/api/post',userPost)
+app.use('/api/user',userLogin)
 
 //mongoDb connection
 connectDB();

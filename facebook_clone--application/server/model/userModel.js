@@ -20,9 +20,6 @@ let schema = new mongoose.Schema({
 
     }
 
-
-
-
 })
 
 

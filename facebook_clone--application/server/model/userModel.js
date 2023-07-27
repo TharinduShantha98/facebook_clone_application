@@ -18,7 +18,15 @@ let schema = new mongoose.Schema({
         required:true,
         unique:true,
 
-    }
+    },
+    password:String,
+    userName:String,
+    isFirstTimeLogin:Boolean,
+    createdDate: Date,
+    updatedDated:Date,
+    loginAttemptCount:Number,
+    role:{ type: String, enum: ['user', 'admin'], default: 'user' }
+
 
 })
 

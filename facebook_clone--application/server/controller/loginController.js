@@ -1,53 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
-const multer = require('multer');
-const jwt = require('jsonwebtoken');
-
 let userDb = require('../model/userModel');
-
-
-
-const secretKey = 'I_have_a_BENZ';
-
-
-
-function generateToken(payload){
-    return jwt.sign(payload, secretKey,{expiresIn: '1h'})
-}
-
-function verifyToken(token){
-    return jwt.verify(token, secretKey);
-}
-
-
-
+let jwtToken = require('../security/jwtConfig')
+const bcrypt = require('bcrypt')
 
 router.post('/login',async (req,res)=>{
     console.log(req.body);
 
 
     try{
-        let {firstName, email} = req.body
-        let user = await userDb.findOne({firstName})
+        let {userName, password} = req.body
+        let user = await userDb.findOne({userName})
         if(!user){
             console.log("user not found ")
             return res.status(404).json({message: 'user not found'})
         }
-        console.log(user.email)
-        console.log(email)
-        if(user.email !== email){
-            return  res.status(404).json({message:'email not found'})
+        console.log(user.password)
+        console.log(password)
+        let passwordMatch  = await bcrypt.compare(password,user.password);
+        console.log(passwordMatch)
+        if(!passwordMatch){
+            return  res.status(404).json({message:'password  not matched'})
         }
-        const token = generateToken({userName: user.firstName })
+        const token = jwtToken.generateToken({userName: user.firstName, role: user.role})
         return res.status(200).json({message: 'valid', token: token})
 
     }catch (e) {
-        return nextTick(e)
+        return (e)
     }
-
-
-
 
 
 })

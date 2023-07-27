@@ -13,12 +13,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/server/controller/userController.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/server/database/connection.js">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/server/model/userModel.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/server/security/jwtAuthMiddle.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/server/security/jwtAuthMiddleware.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/server/security/jwtConfig.js">
           <value>
             <set />
           </value>

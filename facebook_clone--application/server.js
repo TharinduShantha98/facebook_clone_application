@@ -10,6 +10,8 @@ const connectDB = require('./server/database/connection')
 const customer = require('./server/controller/userController')
 const userPost = require('./server/controller/postController')
 const userLogin = require('./server/controller/loginController')
+const item = require('./server/controller/itemController')
+const placeOrder = require('./server/controller/placeOrderController')
 
 
 
@@ -21,7 +23,11 @@ const app = express();
 app.use(bodyParser.json());
 
 // for parsing application/x-www-
-app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
+
+//app.use(bodyParser.urlencoded({ extended: true }));
 //form-urlencoded
 
 // for parsing multipart/form-data
@@ -40,6 +46,8 @@ app.use(morgan('tiny'));
 app.use('/api/customer',customer)
 app.use('/api/post',userPost)
 app.use('/api/user',userLogin)
+app.use('/api/item',item)
+app.use('/api/placeOrder',placeOrder)
 
 //mongoDb connection
 connectDB();

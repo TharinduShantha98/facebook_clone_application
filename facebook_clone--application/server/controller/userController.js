@@ -32,12 +32,10 @@ router.get('/',jwtAuthMiddleware,requireRole('admin'),(req,res)=>{
 
     userDb.find()
         .then(user=>{
-            res.send(user);
+            res.status(200).send({message:"successfully get ",data:user,status:10});
         })
         .catch(err=>{
-            res.status(500).send({
-                message:err.message || "Error Occurred while retrieving user information"
-            })
+            res.status(200).send({message:"unSuccessfully get ",data:null,status:5});
         })
 
 
@@ -45,14 +43,13 @@ router.get('/',jwtAuthMiddleware,requireRole('admin'),(req,res)=>{
 })
 
 
-router.post('/',jsonParser,async (req,res)=>{
+router.post('/',jwtAuthMiddleware,jsonParser,async (req,res)=>{
 
     console.log(req.body);
 
 
     if(!req.body){
-        res.status(400).send({message:"Content can not be empty"});
-        return
+        return  res.status(400).send({message:"Content can not be empty",data:null,status:5});
 
     }
 
@@ -77,19 +74,16 @@ router.post('/',jsonParser,async (req,res)=>{
     user
         .save(user)
         .then(data=>{
-            res.send(data);
+            res.status(200).send({message:"successfully save",data:data,status:10});
         })
         .catch(err=>{
-            res.status(500).send({
-                message:err.message|| "some error occurred while creating a create operation"
-            })
+            res.status(200).send({message:"unSuccessfully save",data:null,status:5});
         })
 
 })
 
 
 router.put('/:id',jsonParser,(req,res)=>{
-    console.log("hello put")
 
     if(!req.body){
         res.status(400).send({message:"content can not be empty"})
@@ -102,9 +96,9 @@ router.put('/:id',jsonParser,(req,res)=>{
    userDb.findByIdAndUpdate(id, content)
        .then(data=>{
            if(!data){
-              res.status(404).send({message:`cannot update user with${id}. maybe user not found`})
+              res.status(500).send({message:`cannot update user with${id}. maybe user not found`,data:null,status:5})
            }else{
-               res.send(data)
+               res.status(200).send({message:"successfully updated",data:data,status:10});
            }
 
        })
@@ -119,11 +113,9 @@ router.delete("/:id",(req,res)=>{
     userDb.findByIdAndDelete(id)
         .then(data=>{
             if(!data){
-                res.status(404).send({message:`cannot Delete with id ${id}. maybe is is wrong`})
+                res.status(404).send({message:`cannot Delete with id ${id}. maybe is is wrong`,data:null,status:5})
             }else {
-                res.send({
-                    message:"User was deleted successfully"
-                })
+                res.status(200).send({message:"successfully deleted",data:data,status:10});
             }
 
         }
@@ -144,9 +136,9 @@ router.get('/searchUser',(req,res)=>{
         .then(data=>{
 
             if(!data){
-                res.status(404).send({message:"not found user with id: " + id});
+                res.status(404).send({message:"not found user with id: " + id,data:null,status:5});
             }else{
-                res.send(data);
+                res.status(200).send({message:"successfully deleted",data:data,status:10});
             }
 
 
@@ -156,40 +148,6 @@ router.get('/searchUser',(req,res)=>{
         })
 
 
-
-
-})
-
-
-router.post('/login',(req,res)=>{
-
-    let userName = req.body.username
-    let email = req.body.email
-
-    console.log(email);
-
-
-    userDb.find({"firstName" : userName, "email": email})
-        .then(user =>{
-            if(user){
-                //res.send(user)
-
-                let token = jsonWebToken.sign(
-                    {userName:user.username},
-                    'verySecretValue',{expiresIn: '1h'})
-
-
-                res.json({
-                    message: "login successfully",
-                    Token: token
-                })
-
-            }else{
-                res.send({
-                    message:"no user found"
-                })
-            }
-        })
 
 
 })
